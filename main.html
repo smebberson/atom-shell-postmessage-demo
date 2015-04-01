@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>main page</title>
+        <script>
+
+            var path = require('path'),
+                remote = require('remote'),
+                BrowserWindow = remote.require('browser-window'),
+                popped;
+
+            document.addEventListener("DOMContentLoaded", function () {
+
+                document.getElementById('openPopup').addEventListener('click', function (event) {
+
+                    popped = new BrowserWindow({
+                        width: 400,
+                        height: 400
+                    });
+
+                    popped.loadUrl('file://' + path.resolve(__dirname, 'popped.html'));
+                    popped.show();
+
+                });
+
+                document.body.appendChild(document.createElement('p').appendChild(document.createTextNode("Running version " + process.version + ' of atom-shell.')));
+
+            });
+
+            window.addEventListener('message', function (e) {
+                document.getElementById('debug').appendChild(document.createElement('p').appendChild(document.createTextNode("At " + (new Date()) + ', I received ' + e.data)));
+            }, false);
+
+        </script>
+    </head>
+    <body>
+        <h1>main page</h1>
+        <button id="openPopup">open a popup</button>
+        <div id="debug"><p>This is where a message will be displayed:</p></div>
+    </body>
+</html>
